@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProductController!{% endblock %}
+
+{% block body %}
+    {% include 'tools/navbarAdminUpdate.html.twig' %}
+
+    <div class="container">
+    <div style="display: flex; width: 100%; height: 100%;justify-content: center; margin-top: 100px">
+        <form method="post" style="width: 60%; padding: 20px" enctype="multipart/form-data" >
+         {#   {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {% if app.user %}
+                <div class="mb-3">
+                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                </div>
+            {% endif %}#}
+
+            <h1 class="h3 mb-3 font-weight-normal">{% if product|default  %} Update {{ product.name}}  {% else%} Enter product {% endif %}</h1>
+            <label  style="margin-top: 10px" for="productname">Product name</label>
+            <input  {% if product|default  %} value="{{ product.name }}" {% endif%} type="text" name="productname" id="productname" class="form-control" required autofocus>
+            <label style="margin-top: 10px" for="price">Price</label>
+            <input  {% if product|default  %} value="{{ product.price }}" {% endif%} type="text"  name="price" id="price" class="form-control"  required>
+            <label style="margin-top: 10px" for="details" class="form-label">Details</label>
+            <textarea name="details" id="details" class="form-control" required>{% if product|default  %}{{ product.details|trim }}{% endif%}</textarea>
+
+            <input type="hidden" name="_csrf_token"
+                   value="{{ csrf_token('authenticate') }}"
+            >
+
+            <div class="mb-3">
+                <label style="margin-top: 10px" for="productimg" class="form-label">Product image</label>
+
+                <input class="form-control" name="img" type="file" id="productimg">
+                {% if product|default %}
+                <img width="200" class="ml-lg-5 order-1 order-lg-2 mt-2 rounded" src="{{ asset("uploads/images/" ~ product.imagename) }}" alt="image">
+                {% endif %}
+            </div>
+
+            <button style="margin-top: 10px" class="btn btn-primary" type="submit">
+                Submit
+            </button>
+        </form>
+    </div>
+    </div>
+{% endblock %}
